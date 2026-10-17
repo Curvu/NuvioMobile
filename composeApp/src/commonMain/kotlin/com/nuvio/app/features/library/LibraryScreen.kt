@@ -105,7 +105,7 @@ fun LibraryScreen(
     scrollToTopRequests: Flow<Unit> = emptyFlow(),
     onPosterClick: ((LibraryItem) -> Unit)? = null,
     onPosterLongClick: ((LibraryItem, LibrarySection) -> Unit)? = null,
-    onSectionViewAllClick: ((LibrarySection, LibrarySortOption) -> Unit)? = null,
+    onSectionViewAllClick: ((LibrarySection, LibrarySortOption, LibraryWatchedFilter) -> Unit)? = null,
     onCloudFilePlay: ((CloudLibraryItem, CloudLibraryFile) -> Unit)? = null,
     onConnectCloudClick: (() -> Unit)? = null,
     onCatalogClick: ((HomeCatalogSection) -> Unit)? = null,
@@ -543,7 +543,11 @@ fun LibraryScreen(
                                     sortOption = effectiveSortOption,
                                     posterPattern = effectivePosterPattern,
                                     onPosterClick = onPosterClick,
-                                    onSectionViewAllClick = onSectionViewAllClick,
+                                    onSectionViewAllClick = onSectionViewAllClick?.let { callback ->
+                                        { section, sortOption ->
+                                            callback(section, sortOption, selectedWatchedFilter)
+                                        }
+                                    },
                                     onPosterLongClick = onPosterLongClick,
                                     onDisintegrated = disintegration::onExited,
                                 )

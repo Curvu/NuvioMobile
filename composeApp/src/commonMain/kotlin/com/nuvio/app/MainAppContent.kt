@@ -112,6 +112,7 @@ import com.nuvio.app.features.library.LibraryItem
 import com.nuvio.app.features.library.LibraryRepository
 import com.nuvio.app.features.library.LibrarySection
 import com.nuvio.app.features.library.LibrarySortOption
+import com.nuvio.app.features.library.LibraryWatchedFilter
 import com.nuvio.app.features.library.LibrarySourceMode
 import com.nuvio.app.features.library.PendingTrackingMembershipRemoval
 import com.nuvio.app.features.library.TrackingMembershipRemovalConfirmationHost
@@ -1139,7 +1140,7 @@ internal fun MainAppContent(
                                     LibrarySourceMode.MDBLIST -> stringResource(Res.string.library_mdblist_title)
         }
 
-        val onLibrarySectionViewAllClick: (LibrarySection, LibrarySortOption) -> Unit = { section, sortOption ->
+        val onLibrarySectionViewAllClick: (LibrarySection, LibrarySortOption, LibraryWatchedFilter) -> Unit = { section, sortOption, watchedFilter ->
             val launchId = CatalogLaunchStore.put(
                 CatalogLaunch(
                     title = section.displayTitle,
@@ -1148,6 +1149,7 @@ internal fun MainAppContent(
                         contentType = section.items.firstOrNull()?.type ?: "movie",
                         sectionType = section.type,
                         sortOption = sortOption,
+                        watchedFilter = watchedFilter,
                     ),
                 ),
             )

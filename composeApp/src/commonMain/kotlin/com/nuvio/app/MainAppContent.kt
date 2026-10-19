@@ -111,6 +111,7 @@ import com.nuvio.app.features.home.components.shouldBlurContinueWatchingArtwork
 import com.nuvio.app.features.library.LibraryItem
 import com.nuvio.app.features.library.LibraryRepository
 import com.nuvio.app.features.library.LibrarySection
+import com.nuvio.app.features.library.rememberLibrarySectionTitleResolver
 import com.nuvio.app.features.library.LibrarySortOption
 import com.nuvio.app.features.library.LibraryWatchedFilter
 import com.nuvio.app.features.library.LibrarySourceMode
@@ -1140,10 +1141,13 @@ internal fun MainAppContent(
                                     LibrarySourceMode.MDBLIST -> stringResource(Res.string.library_mdblist_title)
         }
 
+        val resolveLibrarySectionTitle = rememberLibrarySectionTitleResolver()
+
         val onLibrarySectionViewAllClick: (LibrarySection, LibrarySortOption, LibraryWatchedFilter) -> Unit = { section, sortOption, watchedFilter ->
+            val sectionTitle = resolveLibrarySectionTitle(section.type, section.displayTitle)
             val launchId = CatalogLaunchStore.put(
                 CatalogLaunch(
-                    title = section.displayTitle,
+                    title = sectionTitle,
                     subtitle = librarySectionSubtitle,
                     target = CatalogTarget.Library(
                         contentType = section.items.firstOrNull()?.type ?: "movie",
@@ -1156,7 +1160,7 @@ internal fun MainAppContent(
             navController.navigate(
                 CatalogRoute(
                     launchId = launchId,
-                    title = section.displayTitle,
+                    title = sectionTitle,
                     subtitle = librarySectionSubtitle,
                 ),
             )
